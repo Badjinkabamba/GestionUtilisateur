@@ -19,6 +19,10 @@
     To retrieve user with a ID
       GET: /api/users/id 
       
+    To retrieve user with Name
+      GET: /api/users/search
+       param: userName 
+      
     To register a user
       POST:  /api/users
          Constrains :
