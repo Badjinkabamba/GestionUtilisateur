@@ -1,5 +1,6 @@
 package com.sid.gestionUtilisateurs.dtos;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -28,14 +29,19 @@ import lombok.NoArgsConstructor;
  * @author A734647
  *
  */
-public class UserDto {
+public class UserDto implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private long id;
 	
 	private String nom;
 	
 	@JsonProperty(access = Access.AUTO)
-	@JsonFormat(pattern = "dd/M/yyyy")
+	@JsonFormat(pattern = "MM/dd/yyyy",shape = JsonFormat.Shape.STRING)
 	private LocalDate dateNaissance;
 	
 	private String paysResidence;

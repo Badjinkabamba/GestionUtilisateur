@@ -37,7 +37,7 @@ public interface UserServiceI {
 	/**
 	 * Methode To find user by id
 	 */
-	void deleteUser(Long id) throws UserNotFoundException;
+	String deleteUser(Long id) throws UserNotFoundException;
 
 	/**
 	 * Methode To find user by Nam

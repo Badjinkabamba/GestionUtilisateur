@@ -20,9 +20,6 @@ import com.sid.gestionUtilisateurs.dtos.UserDto;
 import com.sid.gestionUtilisateurs.exceptions.UserNotFoundException;
 import com.sid.gestionUtilisateurs.services.UserServiceI;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-
 /**
  * 
  * @author A734647
@@ -101,8 +98,8 @@ public class UserRestController {
     public ResponseEntity<?> deleteUser(@PathVariable Long id) throws UserNotFoundException{
     	  
         try {
-        	userService.deleteUser(id);
-    		return new ResponseEntity<>("", HttpStatus.OK);
+        	String reponse =userService.deleteUser(id);
+    		return new ResponseEntity<>(reponse, HttpStatus.OK);
     	} 	catch (UserNotFoundException e) {
     		return new ResponseEntity<String>("Error, the data entered is not consisten", HttpStatus.NOT_ACCEPTABLE);
     	}

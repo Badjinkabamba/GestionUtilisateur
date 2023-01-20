@@ -59,7 +59,7 @@ public class UserMapperImpl {
 		
 		if ( entity.getGenre()!=null  && entity.getGenre().toString().length()>0) {
 			
-			userDto.setGenre(entity.getGenre().toString());
+			userDto.setGenre(entity.getGenre().toString().toUpperCase());
 		}
 		else {
 			

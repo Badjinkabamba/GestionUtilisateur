@@ -1,12 +1,14 @@
 package com.sid.gestionUtilisateurs.services;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
 
 import java.time.LocalDate;
+import java.util.List;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -104,6 +106,119 @@ public class UserServiecImplTest {
 			assertEquals(updateUser.getDateNaissance(), savedUser.getDateNaissance());
 			assertEquals(updateUser.getTelephone(), savedUser.getTelephone());
 			
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	@Test
+	public void shouldfindUserByIdWithSuccess() {
+		
+		try {
+			UserDto expectedUser = UserDto.builder()
+					.nom("Bamba")
+					.paysResidence("France")
+					.telephone("+33 1 23 45 67 90")
+					.genre(Gender.F.toString())
+					.dateNaissance(localDate)
+					.build();
+			
+			UserDto savedUser = userService.saveUser(expectedUser);
+			
+			UserDto findUser =  userService.getUserById(savedUser.getId());
+			
+			assertNotNull(findUser);
+			assertNotNull(findUser.getId());
+			assertEquals(findUser.getId(), savedUser.getId());
+			assertEquals(findUser.getNom(), savedUser.getNom());
+			assertEquals(findUser.getPaysResidence(), savedUser.getPaysResidence());
+			assertEquals(findUser.getGenre(), savedUser.getGenre());
+			assertEquals(findUser.getDateNaissance(), savedUser.getDateNaissance());
+			assertEquals(findUser.getTelephone(), savedUser.getTelephone());
+			
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void shouldfindUserByIdWithNotUserNotFoundException() {
+		
+		UserNotFoundException expectedException = assertThrows(UserNotFoundException.class, ()-> userService.getUserById(0l));
+		assertEquals("User with id: 0 Not found",expectedException.getMessage());
+	}
+	
+	@Test
+	public void shouldfindUserByNameWithSuccess() {
+		
+		try {
+			UserDto expectedUser = UserDto.builder()
+					.nom("Bamba")
+					.paysResidence("France")
+					.telephone("+33 1 23 45 67 90")
+					.genre(Gender.F.toString())
+					.dateNaissance(localDate)
+					.build();
+			
+			 userService.saveUser(expectedUser);
+			
+			List<UserDto> findUsers =  userService.searchUser("Bamba");
+			assertNotNull(findUsers);
+			assertThat(findUsers).size().isGreaterThan(0);
+			
+			
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void shouldfindUserByNameWhenDoesNotExist() {
+		
+		try {
+			UserDto expectedUser = UserDto.builder()
+					.nom("Bamba")
+					.paysResidence("France")
+					.telephone("+33 1 23 45 67 90")
+					.genre(Gender.F.toString())
+					.dateNaissance(localDate)
+					.build();
+			
+			 userService.saveUser(expectedUser);
+			
+			List<UserDto> findUsers =  userService.searchUser("Lamine");
+			assertNotNull(findUsers);
+			assertThat(findUsers).size().isLessThanOrEqualTo(0);
+			
+			
+		} catch (UserNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	@Test
+	public void shoulddeleteUserWithSuccess() {
+		
+		try {
+			UserDto expectedUser = UserDto.builder()
+					.nom("Bamba")
+					.paysResidence("France")
+					.telephone("+33 1 23 45 67 90")
+					.genre(Gender.F.toString())
+					.dateNaissance(localDate)
+					.build();
+			String succes="SUCCESS";
+			 UserDto savedUser=userService.saveUser(expectedUser);
+			 String reponse = userService.deleteUser(savedUser.getId());
+			 assertThat(reponse).isEqualTo(succes);
+			 
+			 
+			 
 		} catch (UserNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -78,7 +78,7 @@ public class UserServiecImpl implements UserServiceI {
 	@Override
 	public UserDto getUserById(Long id) throws UserNotFoundException {
 		  User user = userRepository.findById(id)
-	                .orElseThrow(() -> new UserNotFoundException("User Not found"));
+	                .orElseThrow(() -> new UserNotFoundException("User with id: "+ id +" Not found"));
 		return userMapper.toDto(user);
 	}
 
@@ -99,11 +99,12 @@ public class UserServiecImpl implements UserServiceI {
 	 */
 	@UserLogEntryExit(showArgs = true, showResult = true, unit = ChronoUnit.MILLIS)
 	@Override
-	public void deleteUser(Long id) throws UserNotFoundException {
+	public String deleteUser(Long id) throws UserNotFoundException {
 		 User user = userRepository.findById(id)
 	                .orElseThrow(() -> new UserNotFoundException("User Not found"));
 		
 		 userRepository.delete(user);
+		 return  "SUCCESS";
 	}
 
 	/**
