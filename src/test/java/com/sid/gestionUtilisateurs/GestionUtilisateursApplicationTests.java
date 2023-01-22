@@ -12,10 +12,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -26,16 +26,15 @@ import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.mockito.BDDMockito.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.sid.gestionUtilisateurs.dtos.UserDto;
 import com.sid.gestionUtilisateurs.enums.Gender;
 import com.sid.gestionUtilisateurs.exceptions.UserNotFoundException;
+import com.sid.gestionUtilisateurs.mappers.UserMapperImpl;
+import com.sid.gestionUtilisateurs.repositories.UserRepository;
 import com.sid.gestionUtilisateurs.services.UserServiceI;
 import com.sid.gestionUtilisateurs.web.UserRestController;
 
@@ -48,6 +47,11 @@ class GestionUtilisateursApplicationTests {
 
     @MockBean
     private UserServiceI userService;
+    
+    @MockBean
+    private UserRepository userRepositorie;
+    
+	private UserMapperImpl userMapper = new UserMapperImpl() ;
     
     LocalDate localDate = LocalDate.of(1995, 1, 12);
 	
@@ -159,10 +163,11 @@ public void getUserByIdkMVCTest() throws UserNotFoundException {
 					.genre(Gender.F.toString())
 					.dateNaissance(localDate)
 					.build();
-		 userService.saveUser(expectedUser);
+		// userService.saveUser(expectedUser);
+		 Mockito.when(userRepositorie.getById(1L)).thenReturn(userMapper.toEntity(expectedUser));
 		 Mockito.when(userService.deleteUser(1L)).thenReturn("SUCCESS");
 			
-		 mockMVC.perform(delete("/api/users/1") .contentType(MediaType.APPLICATION_JSON)
+		 mockMVC.perform(delete("/api/users/3") .contentType(MediaType.APPLICATION_JSON)
 			      .content("SUCCESS"))
 				 .andExpect(status().isOk());
 
