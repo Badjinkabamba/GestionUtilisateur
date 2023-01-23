@@ -44,7 +44,7 @@ public class UserRestController {
        
     }
 	
-    @GetMapping("/Users/search")
+    @GetMapping("/users/search")
     public ResponseEntity <?> searchUser(@RequestParam(name = "keyword",defaultValue = "") String keyword){
     	try {
 			List<UserDto> users = userService.searchUser("%"+keyword+"%");
@@ -54,7 +54,7 @@ public class UserRestController {
 		}
     }
     
-    @GetMapping("/Users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<?> getUser(@PathVariable(name = "id") Long UserId) throws UserNotFoundException {
     	try {
     		UserDto  userData = userService.getUserById(UserId);
@@ -66,7 +66,7 @@ public class UserRestController {
         
     }
     
-    @PostMapping("/Users")
+    @PostMapping("/users")
     public ResponseEntity<?>  createUser(@RequestBody UserDto UserDto) throws UserNotFoundException {
     	try {
     		UserDto saveduser = userService.saveUser(UserDto);
@@ -79,7 +79,7 @@ public class UserRestController {
     	}
     }
     
-    @PutMapping("/Users/{UserId}")
+    @PutMapping("/users/{UserId}")
     public ResponseEntity<?>  updateUser(@PathVariable Long UserId, @RequestBody UserDto userDto) throws UserNotFoundException{
         
         try {
@@ -94,7 +94,7 @@ public class UserRestController {
     	}
     }
     
-    @DeleteMapping("/Users/{id}")
+    @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) throws UserNotFoundException{
     	  
         try {

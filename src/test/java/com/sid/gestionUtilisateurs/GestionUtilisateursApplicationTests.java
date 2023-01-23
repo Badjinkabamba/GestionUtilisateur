@@ -162,11 +162,9 @@ public void getUserByIdkMVCTest() throws UserNotFoundException {
 					.genre(Gender.F.toString())
 					.dateNaissance(localDate)
 					.build();
-		// userService.saveUser(expectedUser);
-		 Mockito.when(userRepositorie.getById(1L)).thenReturn(userMapper.toEntity(expectedUser));
 		 Mockito.when(userService.deleteUser(1L)).thenReturn("SUCCESS");
 			
-		 mockMVC.perform(delete("/api/users/3") .contentType(MediaType.APPLICATION_JSON)
+		 mockMVC.perform(delete("/api/users/1") .contentType(MediaType.APPLICATION_JSON)
 			      .content("SUCCESS"))
 				 .andExpect(status().isOk());
 
